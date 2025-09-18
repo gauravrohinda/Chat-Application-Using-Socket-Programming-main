@@ -15,7 +15,11 @@ def receive_messages():
                 handle_incoming_file(message)
             else:
                 print(message)
+                # Save message into a log file
+                with open("chat_history.txt", "a", encoding="utf-8") as log:
+                    log.write(message + "\n")
         except:
+            print("Connection closed by the server.")
             break
 
 # Function to handle incoming file transmission
@@ -36,6 +40,8 @@ def handle_incoming_file(command):
             file.write(chunk)
             bytes_received += len(chunk)
     print(f"Received file: {file_path}")
+    with open("chat_history.txt", "a", encoding="utf-8") as log:
+        log.write(f"Received file: {file_path}\n")
 
 # Function to send messages to the server
 def send_messages():
@@ -45,6 +51,9 @@ def send_messages():
             handle_outgoing_file(message)
         else:
             client_socket.send(message.encode('utf-8'))
+            # Log sent messages
+            with open("chat_history.txt", "a", encoding="utf-8") as log:
+                log.write(f"You: {message}\n")
 
 # Function to handle outgoing file transmission
 def handle_outgoing_file(command):
@@ -59,13 +68,15 @@ def handle_outgoing_file(command):
         return
     
     client_socket.send(command.encode('utf-8'))
+    with open("chat_history.txt", "a", encoding="utf-8") as log:
+        log.write(f"You sent a file: {file_path}\n")
 
 # Starting the client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print(f"Client socket created using TCP protocol")
 client_socket.connect((HOST, PORT))
 
-# Starting threads to handle sending and receiving messages
+# Start threads for receiving and sending messages
 receive_thread = threading.Thread(target=receive_messages)
 receive_thread.start()
 

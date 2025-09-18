@@ -1,0 +1,9 @@
+Enter your username: 
+You: gaurav
+You are now connected! Type /private <username> <message> to send private messages. Use /sendfile <username> <file_path> to send files or /sendimage <username> <file_path> to send images.
+You: Hello everyone!
+You: /private rahul Hi Rahul!
+User rahul not found.
+You: 
+You: /private gaurav  Hi Rahul!
+ahul!
